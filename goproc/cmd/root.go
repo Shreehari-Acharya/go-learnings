@@ -1,34 +1,36 @@
 /*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2026 Shreehari Acharya shreehari.acharya.06@gmail.com
 */
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
+var source string
+var output string
 
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "goproc",
 	Short: "Get system process and memory information",
 	Long: `goproc is a CLI tool written in Go that provides detailed information
-about system processes and memory usage. It leverages Go's standard library
-and third-party packages to fetch and display this information in a user-friendly
-manner. Whether you're a developer, system administrator, or just curious about
-your system's performance, goproc offers a simple way to access vital system
-metrics directly from the command line.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+about system processes and memory usage and outputs in json or prometheus format.`,
+
+	Run: func(cmd *cobra.Command, args []string) { 
+
+		sourceFlag, _ := cmd.Flags().GetString("source")
+		outputFlag, _ := cmd.Flags().GetString("output")
+
+		fmt.Println("source file : ", sourceFlag)
+		fmt.Println("output format : ", outputFlag)
+
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -37,15 +39,23 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.goproc.yaml)")
+	rootCmd.Flags().StringVarP(
+		&source,
+		"source",
+		"s",
+		"meminfo",
+		"Source of memory information [meminfo | loadavg | sysinfo | all ]",
+	)
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().StringVarP(
+		&output,
+		"output",
+		"o",
+		"json",
+		"Output format [json, prom] prom - prometheus format",
+	)
+
 }
 
 
