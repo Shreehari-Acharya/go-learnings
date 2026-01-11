@@ -45,7 +45,7 @@ func init() {
 		"source",
 		"s",
 		"meminfo",
-		"Source of memory information [meminfo | loadavg | sysinfo | all ]",
+		"Source of memory information [meminfo | loadavg | cpuinfo | all ]",
 	)
 
 	rootCmd.Flags().StringVarP(
