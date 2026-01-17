@@ -1,4 +1,4 @@
-module github.com/Shreehari-Acharya/goproc
+module github.com/Shreehari-Acharya/go-learnings/goproc
 
 go 1.25.5
 

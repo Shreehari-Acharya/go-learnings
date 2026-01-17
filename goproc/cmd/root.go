@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/Shreehari-Acharya/goproc/internals"
+	"github.com/Shreehari-Acharya/go-learnings/goproc/internals"
 	"github.com/spf13/cobra"
 )
 
