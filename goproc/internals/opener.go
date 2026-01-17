@@ -2,7 +2,6 @@ package internals
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"os"
 )
@@ -11,17 +10,19 @@ import (
 var fileMap = map[string]string{
 	"meminfo": "/proc/meminfo",
 	"cpuinfo": "/proc/cpuinfo",
+	"loadavg": "/proc/loadavg",
 }
 
+// GetSource opens the specified source file and returns a ReadCloser
+// If the source is invalid, it returns an error
+// Supported sources are "meminfo" , "cpuinfo", "loadavg"
 func GetSource(filename string) (io.ReadCloser, error) {
-	if(filename != "meminfo" && filename != "cpuinfo" && filename != "loadavg") {
-		return nil,  fmt.Errorf("invalid source file")
-	}
-
+	
 	path, exists := fileMap[filename]
+
 	if !exists {
-		return os.Open(path)
-	} else {
 		return nil, errors.New("invalid source file")
-	}
+	} 
+
+	return os.Open(path)
 }
