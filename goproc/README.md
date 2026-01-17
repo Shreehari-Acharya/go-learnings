@@ -1,7 +1,3 @@
-This `README.md` is designed to be clear, professional, and focused on the current JSON-only functionality of your tool. It highlights the GitHub-based installation method we discussed.
-
----
-
 # goproc
 
 `goproc` is a lightweight, high-performance CLI tool written in Go for monitoring system health on Linux. It parses kernel data from `/proc` and outputs detailed system statistics in a structured JSON format, making it perfect for automation, logging, or integration with other tools.
