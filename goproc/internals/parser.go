@@ -11,14 +11,14 @@ var memInfo MemInfo
 var loadAvg LoadAvg
 var completedFields = 0
 
-func CPUParser() *CPUInfo {
+func CPUParser() (*CPUInfo, error) {
 
 	completedFields = 0
 
 	reader, err := GetSource("cpuinfo")
 
 	if err != nil {
-		fmt.Println("[ERROR] :", err)
+		return nil, err
 	}
 
 	defer reader.Close()
@@ -63,16 +63,16 @@ func CPUParser() *CPUInfo {
 		}
 	}
 
-	return &cpuInfo
+	return &cpuInfo, nil
 }
 
-func MemParser() *MemInfo {
+func MemParser() (*MemInfo, error) {
 
 	completedFields = 0
 	reader, err := GetSource("meminfo")
 
 	if err != nil {
-		fmt.Println("[ERROR] :", err)
+		return nil, err
 	}
 
 	defer reader.Close()
@@ -114,15 +114,15 @@ func MemParser() *MemInfo {
 		}
 	}
 
-	return &memInfo
+	return &memInfo, nil
 }
 
-func LoadParser() *LoadAvg {
+func LoadParser() (*LoadAvg, error) {
 
 	reader, err := GetSource("loadavg")
 
 	if err != nil {
-		fmt.Println("[ERROR] :", err)
+		return nil, err
 	}
 
 	defer reader.Close()
@@ -148,5 +148,5 @@ func LoadParser() *LoadAvg {
 		}
 	}
 
-	return &loadAvg
+	return &loadAvg, nil
 }
