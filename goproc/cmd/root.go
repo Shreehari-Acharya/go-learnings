@@ -4,29 +4,42 @@ Copyright © 2026 Shreehari Acharya shreehari.acharya.06@gmail.com
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-
+	"github.com/Shreehari-Acharya/goproc/internals"
 	"github.com/spf13/cobra"
 )
 
 var source string
-var output string
-
 
 var rootCmd = &cobra.Command{
 	Use:   "goproc",
 	Short: "Get system process and memory information",
 	Long: `goproc is a CLI tool written in Go that provides detailed information
-about system processes and memory usage and outputs in json or prometheus format.`,
+about system processes and memory usage and outputs in json format.`,
 
 	Run: func(cmd *cobra.Command, args []string) { 
 
-		sourceFlag, _ := cmd.Flags().GetString("source")
-		outputFlag, _ := cmd.Flags().GetString("output")
+		source, err := cmd.Flags().GetString("source")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "[ERROR] : %v\n", err)
+			return
+		}
 
-		fmt.Println("source file : ", sourceFlag)
-		fmt.Println("output format : ", outputFlag)
+		systemInfo, err := internals.GetSystemInfo(source)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "[ERROR] : %v\n", err)
+			return
+		}
+
+		output, err := json.MarshalIndent(systemInfo, "", "  ")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "[ERROR] : %v\n", err)
+			return
+		}
+		
+		fmt.Println(string(output))
 
 	},
 }
@@ -44,16 +57,8 @@ func init() {
 		&source,
 		"source",
 		"s",
-		"meminfo",
+		"all",
 		"Source of memory information [meminfo | loadavg | cpuinfo | all ]",
-	)
-
-	rootCmd.Flags().StringVarP(
-		&output,
-		"output",
-		"o",
-		"json",
-		"Output format [json, prom] prom - prometheus format",
 	)
 
 }
